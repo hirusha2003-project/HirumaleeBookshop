@@ -17,6 +17,7 @@ public class InventoryForm extends javax.swing.JFrame {
      */
     public InventoryForm() {
         initComponents();
+        loadTableData();
     }
 
     /**
@@ -44,6 +45,7 @@ public class InventoryForm extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProducts = new javax.swing.JTable();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,7 +54,7 @@ public class InventoryForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel1.setText(" Inventory Management");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 250, 30));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 250, 30));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel2.setText("  Product Name");
@@ -159,7 +161,12 @@ public class InventoryForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblProducts);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, 510, 190));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, 510, 260));
+
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton4.setText("Update Stock");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 340, 150, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -243,6 +250,15 @@ try {
         new Dashboard().setVisible(true);
 this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        UpdateStockForm updateForm = new UpdateStockForm();
+updateForm.setVisible(true);
+updateForm.setLocationRelativeTo(null); // තිරයේ මැදින් ඕපන් වෙන්න
+
+// මේක ගොඩක් වැදගත්: මේකෙන් වෙන්නේ පොඩි වින්ඩෝ එකේ කතිරෙ (X) එබුවම මුළු ඇප් එකම වැහෙන්නේ නැතුව මේක විතරක් වැහෙන එකයි.
+updateForm.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_jButton4ActionPerformed
     private void clearFields() {
     txtProductName.setText("");
     cmbType.setSelectedIndex(0); // Palamuweni index ekata genawa
@@ -301,12 +317,14 @@ this.dispose();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new InventoryForm().setVisible(true));
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

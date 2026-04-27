@@ -4,6 +4,7 @@
  */
 package com.hirumalee.hirumaleebookshop.view;
 
+import com.hirumalee.hirumaleebookshop.util.DBConnection;
 import java.io.FileNotFoundException;
 import net.sf.jasperreports.engine.JRException;
 
@@ -315,35 +316,74 @@ public class SalesForm extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try {
-    int id = Integer.parseInt(txtSearchID.getText().trim());
-            String name = txtProdName.getText().trim();
-            double unitPrice = Double.parseDouble(txtUnitPrice.getText().trim());
-            int qty = Integer.parseInt(txtQty.getText().trim());
-            double total = unitPrice * qty;
+        // 1. කොටු හිස්ද කියලා බලනවා (Empty Validation)
+        if (txtSearchID.getText().trim().isEmpty() || txtQty.getText().trim().isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please enter both Item ID and Quantity!", "Missing Information", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; // මෙතනින් කෝඩ් එක නවතිනවා
+        }
 
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblBill.getModel();
+        // 2. කොටු වල තියෙන දේවල් ලබා ගන්නවා
+        int id = Integer.parseInt(txtSearchID.getText().trim());
+        String name = txtProdName.getText().trim();
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText().trim());
+        int sellingQty = Integer.parseInt(txtQty.getText().trim());
+        double total = unitPrice * sellingQty;
+
+        // 3. ඩේටාබේස් එකට කනෙක්ට් වෙලා දැනට ස්ටොක් එක කීයද බලනවා
+        java.sql.Connection conn = DBConnection.getConnection(); 
+        String checkSql = "SELECT qty FROM product WHERE id = ?";
+        java.sql.PreparedStatement checkPst = conn.prepareStatement(checkSql);
+        checkPst.setInt(1, id);
+        java.sql.ResultSet rs = checkPst.executeQuery();
+
+        if (rs.next()) {
+            int currentQty = rs.getInt("qty"); 
+
+            // 4. කස්ටමර් ඉල්ලන ගාණ කඩේ තියෙනවද බලනවා
+            if (currentQty >= sellingQty) {
+                
+                // 4.1 බඩු ටික තියෙනවා නම් විතරක් ටේබල් එකට (බිල් එකට) දානවා
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblBill.getModel();
+                model.addRow(new Object[]{
+                    String.valueOf(id), 
+                    name, 
+                    String.valueOf(unitPrice), 
+                    String.valueOf(sellingQty), 
+                    String.valueOf(total)
+                });
+
+                // 4.2 ඊට පස්සේ ඩේටාබේස් එකේ ස්ටොක් එක අඩු කරනවා
+                String updateSql = "UPDATE product SET qty = qty - ? WHERE id = ?";
+                java.sql.PreparedStatement updatePst = conn.prepareStatement(updateSql);
+                updatePst.setInt(1, sellingQty);
+                updatePst.setInt(2, id);
+                updatePst.executeUpdate();
+
+                // 4.3 Net Total එක අප්ඩේට් කරලා, ඊළඟ අයිටම් එක ගහන්න ලේසි වෙන්න කොටු ටික හිස් කරනවා
+                calculateNetTotal(); 
+                txtSearchID.setText("");
+                txtProdName.setText("");
+                txtUnitPrice.setText("");
+                txtQty.setText("");
+                txtSearchID.requestFocus(); // ආයෙත් ID ගහන කොටුවට කර්සරය ගේනවා
+
+            } else if (currentQty == 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Out of Stock! This item is currently unavailable.", "Stock Empty", javax.swing.JOptionPane.WARNING_MESSAGE);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Insufficient Stock! Only " + currentQty + " items left.", "Low Stock", javax.swing.JOptionPane.WARNING_MESSAGE);
+            }
             
-            // මෙන්න මේ පේළිය තමයි වෙනස් කළේ. හැම එකක්ම String කරලා ටේබල් එකට දානවා
-            model.addRow(new Object[]{
-                String.valueOf(id), 
-                name, 
-                String.valueOf(unitPrice), 
-                String.valueOf(qty), 
-                String.valueOf(total)
-            });
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid ID! Item not found in database.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
 
-            calculateNetTotal(); // Net Total eka update karanna
-            
-            // Fields clear karamu
-            txtSearchID.setText("");
-            txtProdName.setText("");
-            txtUnitPrice.setText("");
-            txtQty.setText("");
-            txtSearchID.requestFocus();
-
-        } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please enter valid Quantity!");
-}
+    } catch (NumberFormatException e) {
+        // අකුරු ගහන්න බැරි තැන් වලට අකුරු ගැහුවොත්
+        javax.swing.JOptionPane.showMessageDialog(this, "Please enter valid Numbers for ID, Price, and Quantity!", "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        // ඩේටාබේස් එකේ මොනවා හරි අවුලක් ගියොත්
+        javax.swing.JOptionPane.showMessageDialog(this, "System Error: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed

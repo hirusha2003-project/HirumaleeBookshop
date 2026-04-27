@@ -46,7 +46,8 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 450, 80));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("View Reports");
+        jButton1.setText("Low Stocks");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 200, 110, 40));
 
         btnInventory.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -103,6 +104,11 @@ public class Dashboard extends javax.swing.JFrame {
     // 3. දැනට තියෙන Dashboard එක වහලා දානවා (optional)
     this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new ReportsForm().setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
