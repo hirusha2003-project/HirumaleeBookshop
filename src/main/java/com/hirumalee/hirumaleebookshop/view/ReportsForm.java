@@ -19,6 +19,8 @@ public class ReportsForm extends javax.swing.JFrame {
      */
     public ReportsForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -33,6 +35,7 @@ public class ReportsForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblReports = new javax.swing.JTable();
         btnLowStock = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
@@ -52,30 +55,42 @@ public class ReportsForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblReports);
 
+        btnLowStock.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnLowStock.setText("Load Low Stock");
         btnLowStock.addActionListener(this::btnLowStockActionPerformed);
+
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnBack.setText("Back");
+        btnBack.addActionListener(this::btnBackActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(143, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(132, 132, 132))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(132, 132, 132))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(367, 367, 367))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(368, 368, 368)
-                .addComponent(btnLowStock, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(207, 207, 207)
+                .addComponent(btnLowStock)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(38, 38, 38)
                 .addComponent(btnLowStock, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(29, 29, 29)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addGap(49, 49, 49)
+                .addComponent(btnBack)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
@@ -113,6 +128,13 @@ public class ReportsForm extends javax.swing.JFrame {
 }
     }//GEN-LAST:event_btnLowStockActionPerformed
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        
+    this.dispose(); 
+
+    new Dashboard().setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -139,6 +161,7 @@ public class ReportsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnLowStock;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblReports;

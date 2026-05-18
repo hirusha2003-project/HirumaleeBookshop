@@ -296,6 +296,27 @@ public class SalesForm extends javax.swing.JFrame {
         String finalAmount = lblNetTotal.getText();
         javax.swing.JOptionPane.showMessageDialog(this, "Amount sending to bill: " + finalAmount);
         
+        // =========================================================
+        // 'sales' table එකට විතරක් දත්ත සේව් කරන කොටස
+        // =========================================================
+        try {
+            java.sql.Connection conn = DBConnection.getConnection();
+            String netTotalStr = finalAmount.replace("Rs.", "").trim();
+            double totalAmount = Double.parseDouble(netTotalStr);
+
+            // 1. 'sales' table එකට විතරක් දත්ත ඇතුළත් කිරීම
+            String sqlSales = "INSERT INTO sales (sale_date, total_amount) VALUES (CURRENT_TIMESTAMP, ?)";
+            java.sql.PreparedStatement pstSales = conn.prepareStatement(sqlSales);
+            pstSales.setDouble(1, totalAmount);
+            pstSales.executeUpdate();
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Sale Saved Successfully!");
+
+        } catch (Exception sqlEx) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Database Save Error: " + sqlEx.getMessage());
+        }
+        // =========================================================
+        
         // 2. Parameters (Net Total එක යවනවා)
         java.util.Map<String, Object> parameters = new java.util.HashMap<>();
         parameters.put("netTotal", lblNetTotal.getText()); 

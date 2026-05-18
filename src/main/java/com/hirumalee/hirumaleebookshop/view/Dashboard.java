@@ -29,11 +29,15 @@ public class Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         btnInventory = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        btnDailySales = new javax.swing.JButton();
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Bookshop logo.jpeg"))); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hirumalee Bookshop - Management Dashboard");
@@ -43,7 +47,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("  HIRUMALEE BOOKSHOP MANAGEMENT SYSTEM");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 450, 80));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 450, 30));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("Low Stocks");
@@ -59,6 +63,11 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3.setText("Sales Transaction");
         jButton3.addActionListener(this::jButton3ActionPerformed);
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 200, 140, 40));
+
+        btnDailySales.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDailySales.setText("Daily Sales");
+        btnDailySales.addActionListener(this::btnDailySalesActionPerformed);
+        jPanel1.add(btnDailySales, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 290, 140, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,6 +119,21 @@ public class Dashboard extends javax.swing.JFrame {
     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnDailySalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDailySalesActionPerformed
+        // අපි අලුතින් හදන්න යන DailySalesForm එක ඕපන් කරනවා
+        new DailySalesForm().setVisible(true);
+    }//GEN-LAST:event_btnDailySalesActionPerformed
+     public void setUserRole(String role) {
+    if (role.equals("Cashier")) {
+        // Cashier ට මේ බට්න් ඔබන්න බැරි වෙන්න Disable කරනවා
+        btnInventory.setEnabled(false); 
+        
+        // ඔයාගේ Reports බට්න් එකේ නම (ෆොටෝ එකේ විදිහට මේක jButton1 වෙන්න ඕනේ)
+        jButton1.setEnabled(false);   
+        btnDailySales.setEnabled(false);
+    }
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -136,10 +160,12 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDailySales;
     private javax.swing.JButton btnInventory;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
